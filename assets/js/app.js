@@ -191,24 +191,24 @@ codeAddress();
  *  GEO LOCATE USER
  *****************************/
       infoWindow = new google.maps.InfoWindow;
-      // if (navigator.geolocation) {
-      //   navigator.geolocation.getCurrentPosition(function(position) {
-      //     var pos = {
-      //       lat: position.coords.latitude,
-      //       lng: position.coords.longitude
-      //     };
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
 
-      //     infoWindow.setPosition(pos);
-      //     infoWindow.setContent('You Are Here!');
-      //     infoWindow.open(map);
-      //     map.setCenter(pos);
-      //   }, function() {
-      //     handleLocationError(true, infoWindow, map.getCenter());
-      //   });
-      // } else {
-      //   // Browser doesn't support Geolocation
-      //   handleLocationError(false, infoWindow, map.getCenter());
-      // }
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('You Are Here!');
+          infoWindow.open(map);
+          map.setCenter(pos);
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
 
     }// initialize map
 
@@ -222,7 +222,6 @@ codeAddress();
     
 
     }
-
 
 
  /**********************************
@@ -251,37 +250,24 @@ codeAddress();
         h3.append(titleHolder);
         // Address
         var addressP = $('<p>');
-        var addressHolder = totalAddress;
+        var addressHolder = "<strong>Address</strong>: " + totalAddress;
         addressP.append(addressHolder);
         // Notes
         var notesP = $('<p>');
-        var notesHolder = newBucket.bucketNotes;
+        var notesHolder = "<strong>Notes</strong>: " + newBucket.bucketNotes;
         notesP.append(notesHolder);
 
         var weatherP = $('<p>');
-        var weatherHolder = "Weather: " + newBucket.generalWeather + " " + "Humidity: " + newBucket.humidity;
+        var weatherHolder = "<strong>Weather</strong>: " + newBucket.generalWeather + " / " + "Humidity: " + newBucket.humidity + " / " + "Temperature: " + newBucket.temp;
         weatherP.append(weatherHolder);
         //Delete Button
         var deleteButton = $('<button type="button" class="btn btn-warning">');
         deleteButton.text("Delete");
         deleteButton.attr('data-key', key);
         deleteButton.addClass('delete-btn');
-
-        //Edit Button
-        var editButton = $('<button type="button" class="btn btn-primary">');
-        editButton.text("edit");
-        // Add data to cards for editing
-        editButton.attr('data-key', key);
-        editButton.addClass('edit-btn');
-        editButton.attr('data-title', newBucket.bucketTitle);
-        editButton.attr('data-notes', newBucket.bucketNotes);
-        editButton.attr('data-toggle', "modal");
-        editButton.attr('data-target', "#editModal");
-
-        console.log("data-key: " + editButton.attr('data-key'))
         
         //append everything to cardbody
-        cardBodyDiv.append(h3).append(addressP).append(notesP).append(weatherP).append(editButton).append(deleteButton);
+        cardBodyDiv.append(h3).append(addressP).append(notesP).append(weatherP).append(deleteButton);
 
         cardDiv.append(cardBodyDiv);
 
@@ -331,52 +317,3 @@ codeAddress();
           $(this).parent().parent().remove();
           // codeAddress();
         });
-
-
-        /**********************************
-         * EDIT BUTTON
-         ***********************************/
-        $('body').on('click', '.edit-btn', function(){
-          event.preventDefault();
-          // assign from edit button
-          var dataKey = $(this).attr('data-key');
-          var bucketTitle = $(this).attr('data-title');
-          var bucketNotes = $(this).attr('data-notes');
-          
-          $('#modal-submit').attr('data-title', bucketTitle);
-          $('#modal-submit').attr('data-notes', bucketNotes);
-
-        });
-
-         // SUBMITTING THE MODAL
-       $('#modal-submit').on('click', function(){
-        event.preventDefault();
- 
-        bucketTitle = $('#bucket-title').val().trim();
-        // var address = $('#address').val().trim();
-        bucketNotes = $('#bucket-notes').val().trim();
- 
-        $('#editModal').modal('hide');
-
-        var dataKey = $(this).attr('data-key');
-      
-
-        $('#bucket-title').val('');
-        $('#bucket-notes').val('');
-
- 
-                     
-        firebase.database().ref(dataKey)
-        .update({ 
-            bucketTitle: bucketTitle,
-            bucketNotes: bucketNotes
-            });
-  
-    });
-
-
-
-   
-
-    
-        

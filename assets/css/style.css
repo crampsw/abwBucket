@@ -9,9 +9,14 @@ html, body {
 height: 450px;
 margin: 0;
 padding: 0;
+background-image: url("../images/clouds.jpg");
+background-size: cover;
 }
 
 .card.border-info {
     margin: 20px 0;
 }
-
+.card {
+    background-image: url("../images/cardbg.png");
+    border: 2px solid white;
+}
