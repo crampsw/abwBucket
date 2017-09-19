@@ -1,34 +1,8 @@
-var APIKey = "49c458ce60adce9d175e1f51dd553ee4";
+var windSpeed = '';
+var humidity = '';
+var temp = '';
 
-  // Here we are building the URL we need to query the database
-  var queryURL = "http://api.openweathermap.org/data/2.5/weather?" +
-    "q=" + city + "&units=imperial&appid=" + APIKey;
 
-  // Here we run our AJAX call to the OpenWeatherMap API
-  $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-    // We store all of the retrieved data inside of an object called "response"
-    .done(function(response) {
-
-      // Log the queryURL
-      console.log(queryURL);
-
-      // Log the resulting object
-      console.log(response);
-
-      // Transfer content to HTML
-      $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-      $(".wind").html("Wind Speed: " + response.wind.speed);
-      $(".humidity").html("Humidity: " + response.main.humidity);
-      $(".temp").html("Temperature (F) " + response.main.temp);
-
-      // Log the data in the console as well
-      console.log("Wind Speed: " + response.wind.speed);
-      console.log("Humidity: " + response.main.humidity);
-      console.log("Temperature (F): " + response.main.temp);
-    });
 /**********************
  * Initialize Firebase
  **********************/
@@ -48,7 +22,53 @@ var APIKey = "49c458ce60adce9d175e1f51dd553ee4";
 
   var infoWindow;
   
+/*****************************
+ * OPEN WEATHER API
+ *****************************/
+function getWeather(weatherZip, bucketTitle, streetAddress, city, state, zip, bucketNotes) {
+  
+        // Querying the bandsintown api for the selected artist, the ?app_id parameter is required, but can equal anything
+        var APIKey = "9235461f642781085893bb3ca24d0f8d";
+        // Here we are building the URL we need to query the database
+        var queryURL = "http://api.openweathermap.org/data/2.5/weather?" +
+            "q=" + weatherZip + "&units=imperial&appid=" + APIKey;
+        console.log(queryURL);
+        // Here we run our AJAX call to the OpenWeatherMap API
+        $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+            // We store all of the retrieved data inside of an object called "response"
+            .done(function(response) {
+  
+                // Log the queryURL
+                console.log(queryURL);
+  
+                // Log the resulting object
+                console.log(response);
+              
+                // Log the data in the console as well
+                console.log("weather description: " + response.weather[0].description);
+                console.log("Wind Speed: " + response.wind.speed);
+                console.log("Humidity: " + response.main.humidity);
+                console.log("Temperature (F): " + response.main.temp);
 
+                
+                bucketsRef.push ({
+                  bucketTitle: bucketTitle,
+                  streetAddress: streetAddress,
+                  city: city,
+                  state: state,
+                  zip: zip,
+                  bucketNotes: bucketNotes,
+                  generalWeather: response.weather[0].description,
+                  windSpeed: response.wind.speed,
+                  humidity: response.main.humidity,
+                  temp: response.main.temp,
+                })
+            });
+  
+}
 
 /*****************************
  * ADD BUCKETS FROM FORM INPUT
@@ -62,16 +82,13 @@ var APIKey = "49c458ce60adce9d175e1f51dd553ee4";
     var state = $('#state').val().trim();
     var zip = $('#zip').val().trim();
     var bucketNotes = $('#bucket-notes').val().trim();
-    
-    bucketsRef.push ({
-      bucketTitle: bucketTitle,
-      streetAddress: streetAddress,
-      city: city,
-      state: state,
-      zip: zip,
-      bucketNotes: bucketNotes,
-    })
-    
+    var weather = $("#zip").val().trim();
+    var weatherZip = weather;
+
+    // getWeather(weatherZip);
+
+    getWeather(weatherZip, bucketTitle, streetAddress, city, state, zip, bucketNotes);
+
     // clear out for values
     $('#bucket-title').val('');
     $('#street-address').val('');
@@ -83,19 +100,9 @@ var APIKey = "49c458ce60adce9d175e1f51dd553ee4";
   });
 
 
+
 codeAddress();
 
-
-
-    
-    
-      // This example adds a search box to a map, using the Google Place Autocomplete
-      // feature. People can enter geographical searches. The search box will return a
-      // pick list containing a mix of places and predicted search terms.
-
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
       function initAutocomplete() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -184,24 +191,24 @@ codeAddress();
  *  GEO LOCATE USER
  *****************************/
       infoWindow = new google.maps.InfoWindow;
-      // if (navigator.geolocation) {
-      //   navigator.geolocation.getCurrentPosition(function(position) {
-      //     var pos = {
-      //       lat: position.coords.latitude,
-      //       lng: position.coords.longitude
-      //     };
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
 
-      //     infoWindow.setPosition(pos);
-      //     infoWindow.setContent('You Are Here!');
-      //     infoWindow.open(map);
-      //     map.setCenter(pos);
-      //   }, function() {
-      //     handleLocationError(true, infoWindow, map.getCenter());
-      //   });
-      // } else {
-      //   // Browser doesn't support Geolocation
-      //   handleLocationError(false, infoWindow, map.getCenter());
-      // }
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('You Are Here!');
+          infoWindow.open(map);
+          map.setCenter(pos);
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
 
     }// initialize map
 
@@ -215,7 +222,6 @@ codeAddress();
     
 
     }
-
 
 
  /**********************************
@@ -244,33 +250,24 @@ codeAddress();
         h3.append(titleHolder);
         // Address
         var addressP = $('<p>');
-        var addressHolder = totalAddress;
+        var addressHolder = "<strong>Address</strong>: " + totalAddress;
         addressP.append(addressHolder);
         // Notes
         var notesP = $('<p>');
-        var notesHolder = newBucket.bucketNotes;
+        var notesHolder = "<strong>Notes</strong>: " + newBucket.bucketNotes;
         notesP.append(notesHolder);
+
+        var weatherP = $('<p>');
+        var weatherHolder = "<strong>Weather</strong>: " + newBucket.generalWeather + " / " + "Humidity: " + newBucket.humidity + " / " + "Temperature: " + newBucket.temp;
+        weatherP.append(weatherHolder);
         //Delete Button
         var deleteButton = $('<button type="button" class="btn btn-warning">');
         deleteButton.text("Delete");
         deleteButton.attr('data-key', key);
         deleteButton.addClass('delete-btn');
-
-        //Edit Button
-        var editButton = $('<button type="button" class="btn btn-primary">');
-        editButton.text("edit");
-        // Add data to cards for editing
-        editButton.attr('data-key', key);
-        editButton.addClass('edit-btn');
-        editButton.attr('data-title', newBucket.bucketTitle);
-        editButton.attr('data-notes', newBucket.bucketNotes);
-        editButton.attr('data-toggle', "modal");
-        editButton.attr('data-target', "#editModal");
-
-        console.log("data-key: " + editButton.attr('data-key'))
         
         //append everything to cardbody
-        cardBodyDiv.append(h3).append(addressP).append(notesP).append(editButton).append(deleteButton);
+        cardBodyDiv.append(h3).append(addressP).append(notesP).append(weatherP).append(deleteButton);
 
         cardDiv.append(cardBodyDiv);
 
@@ -320,52 +317,3 @@ codeAddress();
           $(this).parent().parent().remove();
           // codeAddress();
         });
-
-
-        /**********************************
-         * EDIT BUTTON
-         ***********************************/
-        $('body').on('click', '.edit-btn', function(){
-          event.preventDefault();
-          // assign from edit button
-          var dataKey = $(this).attr('data-key');
-          var bucketTitle = $(this).attr('data-title');
-          var bucketNotes = $(this).attr('data-notes');
-          
-          $('#modal-submit').attr('data-title', bucketTitle);
-          $('#modal-submit').attr('data-notes', bucketNotes);
-
-        });
-
-         // SUBMITTING THE MODAL
-       $('#modal-submit').on('click', function(){
-        event.preventDefault();
- 
-        bucketTitle = $('#bucket-title').val().trim();
-        // var address = $('#address').val().trim();
-        bucketNotes = $('#bucket-notes').val().trim();
- 
-        $('#editModal').modal('hide');
-
-        var dataKey = $(this).attr('data-key');
-      
-
-        $('#bucket-title').val('');
-        $('#bucket-notes').val('');
-
- 
-                     
-        firebase.database().ref(dataKey)
-        .update({ 
-            bucketTitle: bucketTitle,
-            bucketNotes: bucketNotes
-            });
-  
-    });
-
-
-
-   
-
-    
-        
