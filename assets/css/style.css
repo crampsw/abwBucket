@@ -24,7 +24,7 @@ background-color: #EFE9F4;
 }
 
 .jumbotron {
-    background-image: url("../images/cardbg.png");
+/*    background-image: url("../images/cardbg.png");*/
     margin-bottom: 0px;
     margin-top: 15px;
     background-image:url("../images/gc.jpg");
@@ -45,13 +45,12 @@ background-color: #EFE9F4;
 .card {
 /*    background-image: url("../images/cardbg.png");*/
     background-image: url("../images/bicycles.png");
-    border: 2px solid white;
-    border-radius: 5px;
+    border: 1px solid black;
     color: white;
 }
 
 .card-header {
-    background-color: dodgerblue;
+    background-color: red;
     font-size: 18px;
     color: white;
 }
