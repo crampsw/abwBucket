@@ -54,9 +54,9 @@ background-color: #EFE9F4;
     margin: 20px 0;
 }
 .card {
-    background-image: url("../images/bicycles.png");
+/*    background-image: url("../images/bicycles.png");*/
     border: 1px solid black;
-    color: white;
+    color: black;
 }
 
 .card-header {
