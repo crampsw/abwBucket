@@ -1,8 +1,8 @@
 
 /* MAP SYTLES */
 #map {
-height: 300px;
-width: 90%;
+height: 275px;
+width: 70%;
     margin-top: 15px;
     margin-bottom: 15px;
     border-style: solid;
@@ -36,6 +36,8 @@ background-color: #EFE9F4;
     border-style: solid;
     border-color: black;
     border-width: 1px;
+    height: 200px;
+    text-align: center;
 }
 
 
@@ -54,9 +56,10 @@ background-color: #EFE9F4;
     margin: 20px 0;
 }
 .card {
-/*    background-image: url("../images/bicycles.png");*/
+/*    background-image: url("../images/brickwall.png");*/
     border: 1px solid black;
     color: black;
+    background-color: white;
 }
 
 .card-header {
