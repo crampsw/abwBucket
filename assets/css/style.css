@@ -23,6 +23,10 @@ background-color: #EFE9F4;
     background-image: url("../images/brickwall.png");
 }
 
+.site-header {
+
+}
+
 .jumbotron {
 /*    background-image: url("../images/cardbg.png");*/
     margin-bottom: 0px;
@@ -34,16 +38,22 @@ background-color: #EFE9F4;
     border-width: 1px;
 }
 
+
+
+
 .login-page {
-    background-image: url("../images/clouds.jpg");
+/*    background-image: url("../images/clouds.jpg");*/
     background-size: cover;
+    background-image: url("../images/gc1.jpg");
+        color: white;
+    text-align: center;
+   text-align: 50%;
 }
 
 .card.border-info {
     margin: 20px 0;
 }
 .card {
-/*    background-image: url("../images/cardbg.png");*/
     background-image: url("../images/bicycles.png");
     border: 1px solid black;
     color: white;
@@ -53,4 +63,9 @@ background-color: #EFE9F4;
     background-color: red;
     font-size: 18px;
     color: white;
+}
+
+#site-title {
+/*    position: absolute;*/
+    
 }
