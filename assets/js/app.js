@@ -30,7 +30,7 @@ function getWeather(weatherZip, bucketTitle, streetAddress, city, state, zip, bu
         // Querying the bandsintown api for the selected artist, the ?app_id parameter is required, but can equal anything
         var APIKey = "9235461f642781085893bb3ca24d0f8d";
         // Here we are building the URL we need to query the database
-        var queryURL = "http://api.openweathermap.org/data/2.5/weather?" +
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
             "q=" + weatherZip + "&units=imperial&appid=" + APIKey;
         console.log(queryURL);
         // Here we run our AJAX call to the OpenWeatherMap API
