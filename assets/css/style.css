@@ -9,8 +9,11 @@ html, body {
 height: 450px;
 margin: 0;
 padding: 0;
-background-image: url("../images/clouds.jpg");
-background-size: cover;
+}
+
+.login-page {
+    background-image: url("../images/clouds.jpg");
+    background-size: cover;
 }
 
 .card.border-info {
