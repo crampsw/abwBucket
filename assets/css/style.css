@@ -1,21 +1,17 @@
 
 /* MAP SYTLES */
 #map {
-height: 100%;
-width: 80%;
-border: 2px solid white;
-border-radius: 5px;
+height: 300px;
+width: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+
 }
 
-.container {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
 
-header {
-    border: 2px solid white;
-    border-radius: 5px;
-}
 
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -23,12 +19,19 @@ height: 100%;
 margin: 0;
 padding: 0;
 background-color: #EFE9F4;
+    font-family: 'Lato', sans-serif;
+    background-image: url("../images/brickwall.png");
 }
 
 .jumbotron {
     background-image: url("../images/cardbg.png");
     margin-bottom: 0px;
     margin-top: 15px;
+    background-image:url("../images/gc.jpg");
+    color: white;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
 }
 
 .login-page {
@@ -40,7 +43,15 @@ background-color: #EFE9F4;
     margin: 20px 0;
 }
 .card {
-    background-image: url("../images/cardbg.png");
+/*    background-image: url("../images/cardbg.png");*/
+    background-image: url("../images/bicycles.png");
     border: 2px solid white;
     border-radius: 5px;
+    color: white;
+}
+
+.card-header {
+    background-color: dodgerblue;
+    font-size: 18px;
+    color: white;
 }
